@@ -40,10 +40,10 @@ def exec_time(start_time, end_time):
     minutes, seconds = divmod(rem, 60)
     print("Execution time: {:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))
 
-# Export merged dataframe as Excel file
-def export_to_excel():
+# Export merged dataframe as CSV file
+def export_to_csv():
   os.makedirs(os.path.dirname(f"features/{export_file}"), exist_ok=True)
-  df.to_excel(f"features/{export_file}", index=False)
+  df.to_csv(f"features/{export_file}", index=False)
 
 if mode != 'subscrape':
   # Execute based on mode
@@ -58,8 +58,8 @@ if mode != 'subscrape':
   elif mode == 'rescrape':
     # Prompt user for the name of the import file to be used
     import_file = prompt("Please enter the name of the import file containing the list of projects you've collected: ", completer=PathCompleter())
-    # Import the list of projects from the import Excel file
-    project_list = pd.read_excel(import_file)["Project URL"].tolist()
+    # Import the list of projects from the import csv file
+    project_list = pd.read_csv(import_file)["Project URL"].tolist()
     api_s = api_m
 
   # Scraping features using html and api scrapers
@@ -125,8 +125,8 @@ if mode != 'subscrape':
     if os.path.exists("clone_urls.txt"):
       os.remove("clone_urls.txt")
 
-    # Update excel file with new features
-    export_to_excel()
+    # Update csv file with new features
+    export_to_csv()
     
     end_time = time.time()
     exec_time(start_time, end_time)
@@ -152,8 +152,8 @@ elif mode == 'subscrape':
     api_df = api.convertToDataFrame()
     df = api_df
       
-    # export to excel file
-    export_to_excel()
+    # export to csv file
+    export_to_csv()
     
     end_time = time.time()
     exec_time(start_time, end_time)
